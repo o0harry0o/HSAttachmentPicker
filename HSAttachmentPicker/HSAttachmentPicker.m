@@ -26,7 +26,7 @@
     UIAlertController *picker = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     NSString *showPhotosPermissionSettingsMessage = [NSBundle.mainBundle objectForInfoDictionaryKey:@"NSPhotoLibraryUsageDescription"];
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera] && showPhotosPermissionSettingsMessage != nil) {
-        UIAlertAction *takePhotoAction = [UIAlertAction actionWithTitle:[self translateString:@"Take Photo"] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIAlertAction *takePhotoAction = [UIAlertAction actionWithTitle:[self translateString:@"Take Video"] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self validatePhotosPermissions:^{
                 [self showImagePicker:UIImagePickerControllerSourceTypeCamera];
             }];
@@ -35,7 +35,7 @@
     }
 
     if (showPhotosPermissionSettingsMessage != nil) {
-        UIAlertAction *useLastPhotoAction = [UIAlertAction actionWithTitle:[self translateString:@"Use Last Photo"] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        UIAlertAction *useLastPhotoAction = [UIAlertAction actionWithTitle:[self translateString:@"Use Last Video"] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self validatePhotosPermissions:^{
                 [self useLastPhoto];
             }];
@@ -56,7 +56,7 @@
     UIAlertAction *importFileFromAction = [UIAlertAction actionWithTitle:[self translateString:@"Import File from"] style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [self showDocumentPicker];
     }];
-    [picker addAction:importFileFromAction];
+//    [picker addAction:importFileFromAction];
 
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:[self translateString:@"Cancel"] style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [self dismissed];
@@ -85,7 +85,7 @@
     fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
     PHFetchResult<PHAsset *> *fetchResult = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:fetchOptions];
     if (fetchResult.count == 0) {
-        [self showError:[self translateString:@"There doesn't seem to be a photo taken yet."]];
+        [self showError:[self translateString:@"There doesn't seem to be a video taken yet."]];
         return;
     }
     [self uploadPhoto:fetchResult.lastObject];
@@ -130,7 +130,7 @@
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     imagePicker.allowsEditing = NO;
-    imagePicker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*)kUTTypeImage, (NSString*)kUTTypeMovie, nil];
+    imagePicker.mediaTypes = [[NSArray alloc] initWithObjects:(NSString*)kUTTypeMovie, nil];
     imagePicker.videoQuality = self.preferredVideoQuality;
     imagePicker.sourceType = sourceType;
     [self.delegate attachmentPickerMenu:self showController:imagePicker completion:^{
